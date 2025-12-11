@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>App de Higienização</title>
+
+<!-- Ícones Google -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        background: #2b2b2b;
+        font-family: Arial, sans-serif;
+        color: white;
+    }
+
+    .screen {
+        display: none;
+        padding: 20px;
+        animation: fade .3s ease;
+    }
+
+    @keyframes fade {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    h1 {
+        text-align: center;
+        color: #D4AF37;
+        margin-bottom: 25px;
+    }
+
+    .btn {
+        background: #D4AF37;
+        border: none;
+        padding: 15px;
+        width: 100%;
+        border-radius: 15px;
+        color: black;
+        font-size: 18px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .btn:hover {
+        transform: scale(1.03);
+        background: #e3c663;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 14px;
+        margin: 8px 0;
+        border-radius: 10px;
+        border: none;
+        background: #3c3c3c;
+        color: white;
+    }
+
+    .item-list {
+        background: #3a3a3a;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    /* TELA INICIAL */
+    #main .btn {
+        font-size: 20px;
+        padding: 18px;
+    }
+</style>
+</head>
+<body>
+
+<!-- ========== TELA INICIAL ========== -->
+<div class="screen" id="main" style="display:block;">
+    <h1>📱 Sistema de Higienização</h1>
+
+    <button class="btn" onclick="openPage('cadastro')">
+        <span class="material-icons">person_add</span> Cadastro de Clientes
+    </button>
+
+    <button class="btn" onclick="openPage('orcamento')">
+        <span class="material-icons">request_quote</span> Orçamentos
+    </button>
+
+    <button class="btn" onclick="openPage('clientesList')">
+        <span class="material-icons">group</span> Lista de Clientes
+    </button>
+
+    <button class="btn" onclick="openPage('estoque')">
+        <span class="material-icons">inventory</span> Reposição de Estoque
+    </button>
+
+    <button class="btn" onclick="openPage('financeiro')">
+        <span class="material-icons">paid</span> Financeiro
+    </button>
+</div>
+
+<!-- ========== TELA CADASTRO DE CLIENTES (ATUALIZADA) ========== -->
+<div class="screen" id="cadastro">
+    <h1>Cadastro de Cliente</h1>
+
+    <input id="nomeCliente" type="text" placeholder="Nome completo">
+    <input id="enderecoCliente" type="text" placeholder="Endereço">
+    <input id="telefoneCliente" type="text" placeholder="Telefone">
+
+    <button class="btn" onclick="salvarCliente()">
+        <span class="material-icons">save</span> Salvar Cliente
+    </button>
+
+    <button class="btn" onclick="openPage('main')">
+        <span class="material-icons">arrow_back</span> Voltar
+    </button>
+</div>
+
+
+<!-- ========== LISTA DE CLIENTES ========== -->
+<div class="screen" id="clientesList">
+    <h1>Clientes Cadastrados</h1>
+    <div id="listaClientes"></div>
+
+    <button class="btn" onclick="openPage('main')">
+        <span class="material-icons">arrow_back</span> Voltar
+    </button>
+</div>
+
+<!-- ========== TELA ORÇAMENTO ========== -->
+<div class="screen" id="orcamento">
+    <h1>Novo Orçamento</h1>
+
+    <select id="clienteOrcamento"></select>
+
+    <select id="tipoServico">
+        <option>Carro detalhado</option>
+        <option>Carro simples</option>
+        <option>Sofá</option>
+        <option>Cortinas</option>
+        <option>Tapete</option>
+        <option>Colchão</option>
+    </select>
+
+    <input type="date" id="dataOrcamento">
+    <input type="number" id="valorOrcamento" placeholder="Valor (R$)">
+
+    <button class="btn" onclick="salvarOrcamento()">
+        <span class="material-icons">add_task</span> Salvar Orçamento
+    </button>
+
+    <button class="btn" onclick="openPage('main')">
+        <span class="material-icons">arrow_back</span> Voltar
+    </button>
+</div>
+
+<!-- ========== TELA ESTOQUE ========== -->
+<div class="screen" id="estoque">
+    <h1>Reposição de Estoque</h1>
+
+    <select id="itemEstoque">
+        <option>Caixa de luvas</option>
+        <option>Peça de extratora</option>
+        <option>Extratora</option>
+        <option>Escova manual</option>
+        <option>Escova rotativa</option>
+        <option>Camisa da empresa</option>
+        <option>Spray brinde</option>
+        <option>Produto para higienização</option>
+        <option>Pulverizador grande</option>
+        <option>Pulverizador pequeno</option>
+        <option>Manta</option>
+        <option>Micro fibra</option>
+        <option>Pincel grande</option>
+        <option>Pincel pequeno</option>
+        <option>Extensão de fio</option>
+        <option>Parafusadeira manual</option>
+    </select>
+
+    <input type="number" id="valorEstoque" placeholder="Valor gasto (R$)">
+
+    <button class="btn" onclick="salvarEstoque()">
+        <span class="material-icons">inventory_2</span> Salvar Reposição
+    </button>
+
+    <button class="btn" onclick="openPage('main')">
+        <span class="material-icons">arrow_back</span> Voltar
+    </button>
+</div>
+
+<!-- ========== FINANCEIRO ========== -->
+<div class="screen" id="financeiro">
+    <h1>Financeiro</h1>
+
+    <h2>Orçamentos em Aberto</h2>
+    <div id="financeiroAberto"></div>
+
+    <h2>Pagos</h2>
+    <div id="financeiroPago"></div>
+
+    <h2>Gastos de Reposição</h2>
+    <div id="gastosEstoque"></div>
+
+    <button class="btn" onclick="openPage('main')">
+        <span class="material-icons">arrow_back</span> Voltar
+    </button>
+</div>
+
+<script>
+let clientes = JSON.parse(localStorage.getItem("clientes") || "[]");
+let orcamentos = JSON.parse(localStorage.getItem("orcamentos") || "[]");
+let estoque = JSON.parse(localStorage.getItem("estoque") || "[]");
+
+function openPage(id) {
+    document.querySelectorAll(".screen").forEach(s => s.style.display = "none");
+    document.getElementById(id).style.display = "block";
+
+    if (id === "clientesList") listarClientes();
+    if (id === "orcamento") carregarClientesOrcamento();
+    if (id === "financeiro") carregarFinanceiro();
+}
+
+function salvarCliente() {
+    let nome = document.getElementById("nomeCliente").value;
+    let endereco = document.getElementById("enderecoCliente").value;
+    let telefone = document.getElementById("telefoneCliente").value;
+
+    if (!nome || !endereco || !telefone) {
+        return alert("Preencha todos os campos!");
+    }
+
+    let dataCadastro = new Date().toLocaleDateString("pt-BR");
+
+    clientes.push({ nome, endereco, telefone, dataCadastro });
+    localStorage.setItem("clientes", JSON.stringify(clientes));
+
+    alert("Cliente cadastrado com sucesso!");
+
+    document.getElementById("nomeCliente").value = "";
+    document.getElementById("enderecoCliente").value = "";
+    document.getElementById("telefoneCliente").value = "";
+}
+
+function listarClientes() {
+    let html = "";
+    clientes.forEach(c => {
+        html += `
+            <div class="item-list">
+                <b>${c.nome}</b><br>
+                Endereço: ${c.endereco}<br>
+                Telefone: ${c.telefone}<br>
+                Cadastrado em: ${c.dataCadastro}
+            </div>`;
+    });
+    document.getElementById("listaClientes").innerHTML = html;
+}
+
+function carregarClientesOrcamento() {
+    let select = document.getElementById("clienteOrcamento");
+    select.innerHTML = "";
+    clientes.forEach(c => {
+        select.innerHTML += `<option>${c.nome}</option>`;
+    });
+}
+
+function salvarOrcamento() {
+    let cliente = document.getElementById("clienteOrcamento").value;
+    let tipo = document.getElementById("tipoServico").value;
+    let data = document.getElementById("dataOrcamento").value;
+    let valor = document.getElementById("valorOrcamento").value;
+
+    if (!valor) return alert("Informe o valor!");
+
+    orcamentos.push({ cliente, tipo, data, valor, status: "aberto" });
+    localStorage.setItem("orcamentos", JSON.stringify(orcamentos));
+
+    alert("Orçamento salvo!");
+}
+
+function salvarEstoque() {
+    let item = document.getElementById("itemEstoque").value;
+    let valor = document.getElementById("valorEstoque").value;
+
+    if (!valor) return alert("Digite o valor gasto.");
+
+    estoque.push({
+        item,
+        valor,
+        data: new Date().toLocaleDateString("pt-BR")
+    });
+
+    localStorage.setItem("estoque", JSON.stringify(estoque));
+
+    alert("Gasto salvo!");
+}
+
+function marcarComoPago(i) {
+    orcamentos[i].status = "pago";
+    localStorage.setItem("orcamentos", JSON.stringify(orcamentos));
+    carregarFinanceiro();
+}
+
+function carregarFinanceiro() {
+    let aberto = "";
+    let pago = "";
+    let gastos = "";
+
+    orcamentos.forEach((o, i) => {
+        let card = `
+            <div class="item-list">
+                <b>Cliente:</b> ${o.cliente}<br>
+                <b>Serviço:</b> ${o.tipo}<br>
+                <b>Data:</b> ${o.data}<br>
+                <b>Valor:</b> R$ ${o.valor}<br><br>
+        `;
+
+        if (o.status === "aberto") {
+            card += `
+                <button class="btn" onclick="marcarComoPago(${i})">
+                    <span class="material-icons">check_circle</span> Marcar como Pago
+                </button>
+            `;
+            aberto += card + "</div>";
+        } else {
+            pago += card + `<span style="color:#00ff00;"><b>PAGO</b></span></div>`;
+        }
+    });
+
+    estoque.forEach(e => {
+        gastos += `
+            <div class="item-list">
+                <b>Item:</b> ${e.item}<br>
+                <b>Valor gasto:</b> R$ ${e.valor}<br>
+                <b>Data:</b> ${e.data}
+            </div>
+        `;
+    });
+
+    document.getElementById("financeiroAberto").innerHTML = aberto;
+    document.getElementById("financeiroPago").innerHTML = pago;
+    document.getElementById("gastosEstoque").innerHTML = gastos;
+}
+</script>
+
+</body>
+</html>

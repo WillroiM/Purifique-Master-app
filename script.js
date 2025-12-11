@@ -1,0 +1,1 @@
+function goTo(page){ alert('Ir para: ' + page); }
